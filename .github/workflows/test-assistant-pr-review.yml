@@ -8,33 +8,10 @@ on:
 permissions: {}
 
 jobs:
-  debug-logs:
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Debug Print
-        run: |
-          echo "Comment body contains '@alopezaritestorg/alopezaritestteam':"
-          echo "${{ contains(github.event.comment.body, '@alopezaritestorg/alopezaritestteam') }}"
-          
-          echo "Pull request requested teams slug contains 'alopezaritestorg/alopezaritestteam':"
-          echo "${{ contains(join(github.event.pull_request.requested_teams.*.slug, ' '), 'alopezaritestorg/alopezaritestteam') }}"
-          
-          echo "Full github.event.pull_request.requested_teams object:"
-          echo "${{ toJson(github.event.pull_request.requested_teams) }}"
-
-
   send-pr-to-slack-for-review:
-    needs: debug-logs
     runs-on: ubuntu-20.04
-    if: >-
-      contains(github.event.comment.body, '@alopezaritestorg/alopezaritestteam') || 
-      contains(join(github.event.pull_request.requested_teams.*.slug, ' '), 'alopezaritestteam')
+    if: contains(join(github.event.pull_request.requested_teams.*.slug, ' '), 'alopezaritestteam')
     steps:
-      - uses: actions/checkout@v3
-        with:
-          sparse-checkout: |
-            .github/actions/pr-scrub-notify-slack
-          ref: trunk
       - name: Notify Slack
         uses: archive/github-actions-slack@d9dae40827adf93bddf939db6552d1e392259d7d
         id: notify
