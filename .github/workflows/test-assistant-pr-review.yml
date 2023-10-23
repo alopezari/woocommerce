@@ -8,11 +8,23 @@ on:
 permissions: {}
 
 jobs:
+  debug-logs:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Debug Print
+        run: |
+          echo "Comment body contains '@alopezaritestorg/alopezaritestteam':"
+          echo "${{ contains(github.event.comment.body, '@alopezaritestorg/alopezaritestteam') }}"
+          
+          echo "Pull request requested teams slug contains 'alopezaritestorg/alopezaritestteam':"
+          echo "${{ contains(join(github.event.pull_request.requested_teams.*.slug, ' '), 'alopezaritestorg/alopezaritestteam') }}"
+          
   send-pr-to-slack-for-review:
+    needs: debug-logs
     runs-on: ubuntu-20.04
     if: >-
       contains(github.event.comment.body, '@alopezaritestorg/alopezaritestteam') || 
-      github.event.pull_request.requested_teams[*].slug == 'alopezaritestorg/alopezaritestteam'
+      contains(join(github.event.pull_request.requested_teams.*.slug, ' '), 'alopezaritestorg/alopezaritestteam')
     steps:
       - uses: actions/checkout@v3
         with:
@@ -23,10 +35,10 @@ jobs:
         uses: archive/github-actions-slack@d9dae40827adf93bddf939db6552d1e392259d7d
         id: notify
         with:
-          slack-bot-user-oauth-access-token: ${{ inputs.TEST_ASSISTANCE_BOT_TOKEN }}
-          slack-channel: ${{ inputs.WOO_PR_TESTING_REVIEW_SLACK_CHANNEL }}
+          slack-bot-user-oauth-access-token: ${{ secrets.TEST_ASSISTANCE_BOT_TOKEN }}
+          slack-channel: ${{ secrets.WOO_PR_TESTING_REVIEW_SLACK_CHANNEL }}
           slack-text: |
-              <!subteam^${{ inputs.WOO_PR_TESTING_REVIEW_TEAM_ID }}>There is a new PR waiting for review:
+              <!subteam^${{ secrets.WOO_PR_TESTING_REVIEW_TEAM_ID }}>There is a new PR waiting for review:
               <${{ github.event.pull_request.html_url }}|${{ github.event.pull_request.title }}> :thread:
           slack-optional-unfurl_links: false
           slack-optional-unfurl_media: false
