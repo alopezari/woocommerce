@@ -11,8 +11,8 @@ jobs:
   send-pr-to-slack-for-review:
     runs-on: ubuntu-20.04
     if: >-
-      contains(github.event.comment.body, '@alopezari') || 
-      github.event.pull_request.requested_reviewers[*].login == 'alopezari'
+      contains(github.event.comment.body, '@alopezaritestorg/alopezaritestteam') || 
+      github.event.pull_request.requested_teams[*].slug == 'alopezaritestorg/alopezaritestteam'
     steps:
       - uses: actions/checkout@v3
         with:
