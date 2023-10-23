@@ -19,6 +19,9 @@ jobs:
           echo "Pull request requested teams slug contains 'alopezaritestorg/alopezaritestteam':"
           echo "${{ contains(join(github.event.pull_request.requested_teams.*.slug, ' '), 'alopezaritestorg/alopezaritestteam') }}"
           
+          echo "Full github.event.pull_request.requested_teams object:"
+          echo "${{ toJson(github.event.pull_request.requested_teams) }}"
+
   send-pr-to-slack-for-review:
     needs: debug-logs
     runs-on: ubuntu-20.04
