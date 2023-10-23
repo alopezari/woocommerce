@@ -22,12 +22,15 @@ jobs:
           echo "Full github.event.pull_request.requested_teams object:"
           echo "${{ toJson(github.event.pull_request.requested_teams) }}"
 
+          echo "Full github.event.pull_request object:"
+          echo "${{ toJson(github.event.pull_request) }}"
+
   send-pr-to-slack-for-review:
     needs: debug-logs
     runs-on: ubuntu-20.04
     if: >-
       contains(github.event.comment.body, '@alopezaritestorg/alopezaritestteam') || 
-      contains(join(github.event.pull_request.requested_teams.*.slug, ' '), 'alopezaritestorg/alopezaritestteam')
+      contains(join(github.event.pull_request.requested_teams.*.slug, ' '), 'alopezaritestteam')
     steps:
       - uses: actions/checkout@v3
         with:
