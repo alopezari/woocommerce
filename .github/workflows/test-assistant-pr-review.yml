@@ -11,8 +11,8 @@ jobs:
   send-pr-to-slack-for-review:
     runs-on: ubuntu-20.04
     if: >-
-      contains(github.event.comment.body, '@woocommerce/solaris') || 
-      github.event.pull_request.requested_teams[*].slug == 'woocommerce/solaris'
+      contains(github.event.comment.body, '@alopezari') || 
+      github.event.pull_request.requested_reviewers[*].login == 'alopezari'
     steps:
       - uses: actions/checkout@v3
         with:
