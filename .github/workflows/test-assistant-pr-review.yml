@@ -22,8 +22,6 @@ jobs:
           echo "Full github.event.pull_request.requested_teams object:"
           echo "${{ toJson(github.event.pull_request.requested_teams) }}"
 
-          echo "Full github.event.pull_request object:"
-          echo "${{ toJson(github.event.pull_request) }}"
 
   send-pr-to-slack-for-review:
     needs: debug-logs
