@@ -11,14 +11,16 @@ permissions: {}
 jobs:
   send-pr-to-slack-for-review:
     runs-on: ubuntu-20.04
-    if: |
-      github.event_name == 'pull_request' &&
-      github.event.action == 'review_requested' &&
-      contains(join(github.event.pull_request.requested_teams.*.slug, ' '), ${{ secrets.WOO_PR_TESTING_REVIEW_TEAM }})
+    env: 
+      WOO_PR_TESTING_REVIEW_TEAM: ${{ secrets.WOO_PR_TESTING_REVIEW_TEAM }}
     steps:
       - name: Notify Slack
         uses: archive/github-actions-slack@d9dae40827adf93bddf939db6552d1e392259d7d
         id: notify
+        if: |
+          github.event_name == 'pull_request' &&
+          github.event.action == 'review_requested' &&
+          contains(join(github.event.pull_request.requested_teams.*.slug, ' '), ${{ env.WOO_PR_TESTING_REVIEW_TEAM }})
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.TEST_ASSISTANCE_BOT_TOKEN }}
           slack-channel: ${{ secrets.WOO_PR_TESTING_REVIEW_SLACK_CHANNEL }}
@@ -30,11 +32,13 @@ jobs:
 
   notify-comment-to-slack:
     runs-on: ubuntu-20.04
-    if: github.event_name == 'issue_comment' && contains(github.event.comment.body, ${{ secrets.WOO_PR_TESTING_REVIEW_TEAM }})
+    env: 
+      WOO_PR_TESTING_REVIEW_TEAM: ${{ secrets.WOO_PR_TESTING_REVIEW_TEAM }}
     steps:
       - name: Notify Slack
         uses: archive/github-actions-slack@d9dae40827adf93bddf939db6552d1e392259d7d
         id: notify
+        if: github.event_name == 'issue_comment' && contains(github.event.comment.body, ${{ env.WOO_PR_TESTING_REVIEW_TEAM }})
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.TEST_ASSISTANCE_BOT_TOKEN }}
           slack-channel: ${{ secrets.WOO_PR_TESTING_REVIEW_SLACK_CHANNEL }}
