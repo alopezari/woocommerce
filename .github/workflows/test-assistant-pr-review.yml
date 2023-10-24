@@ -25,9 +25,9 @@ jobs:
           slack-optional-unfurl_links: false
           slack-optional-unfurl_media: false
 
-  send-comment-to-slack:
+  notify-comment-to-slack:
     runs-on: ubuntu-20.04
-    if: github.event_name == 'issue_comment' && contains(github.event.comment.body, '@alopezaritestorg/alopezaritestteam')
+    if: github.event_name == 'issue_comment' && contains(github.event.comment.body, '${{ WOO_PR_TESTING_REVIEW_TEAM_ID }}')
     steps:
       - name: Notify Slack
         uses: archive/github-actions-slack@d9dae40827adf93bddf939db6552d1e392259d7d
@@ -36,7 +36,7 @@ jobs:
           slack-bot-user-oauth-access-token: ${{ secrets.TEST_ASSISTANCE_BOT_TOKEN }}
           slack-channel: ${{ secrets.WOO_PR_TESTING_REVIEW_SLACK_CHANNEL }}
           slack-text: |
-              @testorg/testteam was mentioned in a comment:
+              <!subteam^${{ secrets.WOO_PR_TESTING_REVIEW_TEAM_ID }}> was mentioned in a comment:
               <${{ github.event.comment.html_url }}|View comment> :speech_balloon:
           slack-optional-unfurl_links: false
           slack-optional-unfurl_media: false
