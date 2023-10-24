@@ -14,7 +14,7 @@ jobs:
     if: |
       github.event_name == 'pull_request' &&
       github.event.action == 'review_requested' &&
-      contains(join(github.event.pull_request.requested_teams.*.slug, ' '), 'alopezaritestteam')
+      contains(join(github.event.pull_request.requested_teams.*.slug, ' '), '${{ WOO_PR_TESTING_REVIEW_TEAM }}')
     steps:
       - name: Notify Slack
         uses: archive/github-actions-slack@d9dae40827adf93bddf939db6552d1e392259d7d
@@ -30,7 +30,7 @@ jobs:
 
   notify-comment-to-slack:
     runs-on: ubuntu-20.04
-    if: github.event_name == 'issue_comment' && contains(github.event.comment.body, '${{ WOO_PR_TESTING_REVIEW_TEAM_ID }}')
+    if: github.event_name == 'issue_comment' && contains(github.event.comment.body, '${{ WOO_PR_TESTING_REVIEW_TEAM }}')
     steps:
       - name: Notify Slack
         uses: archive/github-actions-slack@d9dae40827adf93bddf939db6552d1e392259d7d
