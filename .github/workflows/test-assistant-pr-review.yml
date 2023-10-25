@@ -33,7 +33,7 @@ jobs:
         if: |
           github.event_name == 'pull_request' &&
           github.event.action == 'review_requested' &&
-          contains(join(github.event.pull_request.requested_teams.*.slug, '${{ env.WOO_PR_TESTING_REVIEW_TEAM }}'))
+          contains(join(github.event.pull_request.requested_teams.*.slug, ', '), env.WOO_PR_TESTING_REVIEW_TEAM)
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.TEST_ASSISTANCE_BOT_TOKEN }}
           slack-channel: ${{ secrets.WOO_PR_TESTING_REVIEW_SLACK_CHANNEL }}
