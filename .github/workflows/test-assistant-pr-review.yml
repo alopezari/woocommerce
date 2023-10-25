@@ -24,6 +24,10 @@ jobs:
     env: 
       WOO_PR_TESTING_REVIEW_TEAM: ${{ needs.set-woo-pr-testing-review-team.outputs.team }}
     steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
       - name: Notify Slack
         uses: archive/github-actions-slack@d9dae40827adf93bddf939db6552d1e392259d7d
         id: notify
