@@ -61,7 +61,7 @@ jobs:
       - name: Notify Slack
         uses: archive/github-actions-slack@d9dae40827adf93bddf939db6552d1e392259d7d
         id: notify
-        if: github.event_name == 'issue_comment' && contains(github.event.comment.body, ${{ env.WOO_PR_TESTING_REVIEW_TEAM }})
+        if: github.event_name == 'issue_comment' && contains(github.event.comment.body, env.WOO_PR_TESTING_REVIEW_TEAM)
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.TEST_ASSISTANCE_BOT_TOKEN }}
           slack-channel: ${{ secrets.WOO_PR_TESTING_REVIEW_SLACK_CHANNEL }}
