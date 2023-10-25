@@ -9,10 +9,16 @@ on:
 permissions: {}
 
 jobs:
+  get-woo-pr-testing-review-team:
+    runs-on: ubuntu-20.04
+    outputs:
+      team: ${{ steps.get-woo-pr-testing-review-team.outputs.team }}
+        
   send-pr-to-slack-for-review:
     runs-on: ubuntu-20.04
+    needs: [get-woo-pr-testing-review-team]
     env: 
-      WOO_PR_TESTING_REVIEW_TEAM: ${{ secrets.WOO_PR_TESTING_REVIEW_TEAM }}
+      WOO_PR_TESTING_REVIEW_TEAM: ${{ needs.get-woo-pr-testing-review-team.outputs.team }}
     steps:
       - name: Notify Slack
         uses: archive/github-actions-slack@d9dae40827adf93bddf939db6552d1e392259d7d
@@ -32,8 +38,9 @@ jobs:
 
   notify-comment-to-slack:
     runs-on: ubuntu-20.04
+    needs: [get-woo-pr-testing-review-team]
     env: 
-      WOO_PR_TESTING_REVIEW_TEAM: ${{ secrets.WOO_PR_TESTING_REVIEW_TEAM }}
+      WOO_PR_TESTING_REVIEW_TEAM: ${{ needs.get-woo-pr-testing-review-team.outputs.team }}
     steps:
       - name: Notify Slack
         uses: archive/github-actions-slack@d9dae40827adf93bddf939db6552d1e392259d7d
