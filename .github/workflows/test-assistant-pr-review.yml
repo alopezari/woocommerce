@@ -9,16 +9,20 @@ on:
 permissions: {}
 
 jobs:
-  get-woo-pr-testing-review-team:
+  set-woo-pr-testing-review-team:
     runs-on: ubuntu-20.04
     outputs:
-      team: ${{ steps.get-woo-pr-testing-review-team.outputs.team }}
+      team: ${{ steps.set-team.outputs.team }}
+    steps:
+      - name: Set WOO_PR_TESTING_REVIEW_TEAM
+        id: set-team
+        run: echo "::set-output name=team::${{ secrets.WOO_PR_TESTING_REVIEW_TEAM }}"
         
   send-pr-to-slack-for-review:
     runs-on: ubuntu-20.04
-    needs: [get-woo-pr-testing-review-team]
+    needs: [set-woo-pr-testing-review-team]
     env: 
-      WOO_PR_TESTING_REVIEW_TEAM: ${{ needs.get-woo-pr-testing-review-team.outputs.team }}
+      WOO_PR_TESTING_REVIEW_TEAM: ${{ needs.set-woo-pr-testing-review-team.outputs.team }}
     steps:
       - name: Notify Slack
         uses: archive/github-actions-slack@d9dae40827adf93bddf939db6552d1e392259d7d
@@ -38,9 +42,9 @@ jobs:
 
   notify-comment-to-slack:
     runs-on: ubuntu-20.04
-    needs: [get-woo-pr-testing-review-team]
+    needs: [set-woo-pr-testing-review-team]
     env: 
-      WOO_PR_TESTING_REVIEW_TEAM: ${{ needs.get-woo-pr-testing-review-team.outputs.team }}
+      WOO_PR_TESTING_REVIEW_TEAM: ${{ needs.set-woo-pr-testing-review-team.outputs.team }}
     steps:
       - name: Notify Slack
         uses: archive/github-actions-slack@d9dae40827adf93bddf939db6552d1e392259d7d
