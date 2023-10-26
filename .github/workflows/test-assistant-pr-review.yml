@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-20.04
     env: 
       WOO_PR_TESTING_REVIEW_TEAM: ${{ secrets.WOO_PR_TESTING_REVIEW_TEAM }}
-    if: >-
+    if: |
       (
         github.event_name == 'pull_request' &&
         github.event.action == 'review_requested' &&
