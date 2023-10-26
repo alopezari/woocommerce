@@ -13,14 +13,20 @@ jobs:
     runs-on: ubuntu-20.04
     env: 
       WOO_PR_TESTING_REVIEW_TEAM: ${{ secrets.WOO_PR_TESTING_REVIEW_TEAM }}
+    if: >-
+      (
+        github.event_name == 'pull_request' &&
+        github.event.action == 'review_requested' &&
+        github.event.requested_team.slug == env.WOO_PR_TESTING_REVIEW_TEAM
+      ) || (
+        github.event_name == 'issue_comment' &&
+        contains(github.event.comment.body, env.WOO_PR_TESTING_REVIEW_TEAM)
+      )
     steps:
       - name: Send ping to Slack for a new review
         uses: archive/github-actions-slack@d9dae40827adf93bddf939db6552d1e392259d7d
         id: notify-review
-        if: |
-          github.event_name == 'pull_request' &&
-          github.event.action == 'review_requested' &&
-          github.event.requested_team.slug == env.WOO_PR_TESTING_REVIEW_TEAM
+        if: github.event.action == 'review_requested' &&
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.TEST_ASSISTANCE_BOT_TOKEN }}
           slack-channel: ${{ secrets.WOO_PR_TESTING_REVIEW_SLACK_CHANNEL }}
@@ -33,7 +39,7 @@ jobs:
       - name: Send ping to Slack about a new comment
         uses: archive/github-actions-slack@d9dae40827adf93bddf939db6552d1e392259d7d
         id: notify-comment
-        if: github.event_name == 'issue_comment' && contains(github.event.comment.body, env.WOO_PR_TESTING_REVIEW_TEAM)
+        if: github.event_name == 'issue_comment'
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.TEST_ASSISTANCE_BOT_TOKEN }}
           slack-channel: ${{ secrets.WOO_PR_TESTING_REVIEW_SLACK_CHANNEL }}
