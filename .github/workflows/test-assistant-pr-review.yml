@@ -26,7 +26,7 @@ jobs:
       - name: Send ping to Slack for a new review
         uses: archive/github-actions-slack@d9dae40827adf93bddf939db6552d1e392259d7d
         id: notify-review
-        if: github.event.action == 'review_requested' &&
+        if: github.event.action == 'review_requested'
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.TEST_ASSISTANCE_BOT_TOKEN }}
           slack-channel: ${{ secrets.WOO_PR_TESTING_REVIEW_SLACK_CHANNEL }}
