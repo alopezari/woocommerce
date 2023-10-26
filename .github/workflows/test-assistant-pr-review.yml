@@ -46,7 +46,7 @@ jobs:
   notify-comment-to-slack:
     runs-on: ubuntu-20.04
     env: 
-      WOO_PR_TESTING_REVIEW_TEAM: alopezaritestteam
+      WOO_PR_TESTING_REVIEW_TEAM: ${{ secrets.WOO_PR_TESTING_REVIEW_TEAM }}
     steps:
       - name: Echo Notify Slack Conditions
         run: |
