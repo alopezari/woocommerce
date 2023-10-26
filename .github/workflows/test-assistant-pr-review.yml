@@ -20,7 +20,7 @@ jobs:
         github.event.requested_team.slug == ${{ env.WOO_PR_TESTING_REVIEW_TEAM }}
       ) || (
         github.event_name == 'issue_comment' &&
-        contains(github.event.comment.body, ${{ env.WOO_PR_TESTING_REVIEW_TEAM) }}
+        contains(github.event.comment.body, ${{ env.WOO_PR_TESTING_REVIEW_TEAM }})
       )
     steps:
       - name: Send ping to Slack for a new review
