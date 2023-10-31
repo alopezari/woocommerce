@@ -13,6 +13,12 @@ on:
 permissions: {}
 
 jobs:
+  log-github-context:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Log GitHub context
+        run: echo "${{ toJson(github) }}"
+        
   send-pr-to-slack-for-review:
     runs-on: ubuntu-20.04
     env: 
