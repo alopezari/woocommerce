@@ -281,7 +281,7 @@ jobs:
                 r2-secret-access-key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
                 r2-bucket: ${{ secrets.R2_BUCKET }}
                 source-dir: ${{ steps.download.outputs.download-path }}
-                destination-dir: ./woocommerce-beta.zip
+                destination-dir: ./monthly/
 
             - name: Send release zip to Slack
               id: send-file-slack
@@ -336,7 +336,7 @@ jobs:
                 r2-secret-access-key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
                 r2-bucket: ${{ secrets.R2_BUCKET }}
                 source-dir: ${{ steps.download.outputs.download-path }}
-                destination-dir: ./woocommerce-wooaf.zip
+                destination-dir: ./weekly/
 
             - name: Send release zip to Slack
               id: send-file-slack
